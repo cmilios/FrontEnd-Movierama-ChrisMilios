@@ -3,7 +3,6 @@ import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
@@ -54,7 +53,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function SearchAppBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar>
           <TheaterComedyOutlinedIcon></TheaterComedyOutlinedIcon>
           
@@ -64,7 +63,7 @@ export default function SearchAppBar() {
             component="div"
             sx={{ flexGrow: 1, mx: '5px',  display: { xs: 'none', sm: 'block' } }}
           >
-            Movie-Rama
+            MovieRama
           </Typography>
           <Search>
             <SearchIconWrapper>

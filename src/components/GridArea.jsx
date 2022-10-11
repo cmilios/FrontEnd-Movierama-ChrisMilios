@@ -2,6 +2,7 @@ import { Grid } from '@mui/material'
 import React, {useState, useEffect} from 'react'
 import MovieCard from './MovieCard'
 
+
 export default function GridArea() {
 
   const [movies, setMovies] = useState([])
@@ -16,11 +17,11 @@ export default function GridArea() {
   }, [])
 
   return (
-    <Grid justifyContent="flex-start" container spacing={2}>
+    <Grid sx={{overflow:"hidden", display: "flex"}} justifyContent="flex-start" container spacing={2}>
       {
-        movies.map(movie => {
-           return <MovieCard key={movie.id} image={"https://image.tmdb.org/t/p/w500/"+movie.poster_path} name={movie.title} release_date={movie.release_date}
-            genres_ids={movie.genre_ids} />
+        movies.map((movie,index) => {
+           return <MovieCard key={movie.id} image={"https://image.tmdb.org/t/p/w500/"+movie.poster_path} name={movie.title} release_date={movie.release_date.substring(0,4)}
+            genres_ids={movie.genre_ids} movie={movie} ></MovieCard>
         })
       }
     </Grid>

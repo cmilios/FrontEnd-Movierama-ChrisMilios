@@ -14,11 +14,11 @@ const darkTheme = createTheme({
 
 function App() {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline/>
-      <NavBar/>
-      <GridArea/>
-    </ThemeProvider>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline/>
+        <NavBar/>
+        <GridArea/>
+      </ThemeProvider>
   );
 }
 
