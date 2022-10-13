@@ -1,22 +1,24 @@
-import { Grid, Typography, Divider} from '@mui/material'
+import { Grid, Typography, Divider, ImageList, ImageListItem} from '@mui/material'
 import React, {useState, useEffect} from 'react'
+import MovieCard from './MovieCard'
 import ReviewBox from './ReviewBox'
 
-export default function MovieDetails(props) {
+export default function MovieDetailsArea(props) {
 
   const {movie} = props
 
-  const [trailers, settrailers] = useState([])
-  const [reviews, setreviews] = useState([])
+  const [trailers, setTrailers] = useState([])
+  const [reviews, setReviews] = useState([])
+  const [similarMovies, setSimilarMovies] = useState([])
 
   useEffect(() => {
     fetch(`https://api.themoviedb.org/3/movie/${movie.id}/videos?api_key=bc50218d91157b1ba4f142ef7baaa6a0&language=en-US`)
     .then(response => response.json())
     .then(data => {
-      settrailers([])
+      setTrailers([])
       data.results.map(trailer => {
         if(trailer.type === "Trailer"){
-          settrailers(trailers => [...trailers, trailer])
+          setTrailers(trailers => [...trailers, trailer])
         }
       })
     })
@@ -24,16 +26,30 @@ export default function MovieDetails(props) {
     fetch(`https://api.themoviedb.org/3/movie/${movie.id}/reviews?api_key=bc50218d91157b1ba4f142ef7baaa6a0&language=en-US`)
     .then(response => response.json())
     .then(data => {
-      setreviews([])
+      setReviews([])
       data.results.map(review => {
-        setreviews(reviews => [...reviews, review])
+        setReviews(reviews => [...reviews, review])
       })
     })
+
+    fetch(`https://api.themoviedb.org/3/movie/${movie.id}/similar?api_key=bc50218d91157b1ba4f142ef7baaa6a0&language=en-US&page=1`)
+    .then(response => response.json())
+    .then(data => {
+      setSimilarMovies([])
+      data.results.map(similarMovie => {
+        setSimilarMovies(similarMovies => [...similarMovies, similarMovie])
+      })
+    })
+
   }, [movie.id])
 
   useEffect(() => {
     console.log(reviews)
   }, [reviews])
+
+  useEffect(() => {
+    console.log(similarMovies)
+  }, [similarMovies])
 
   return (
     <Grid container justifyContent="center" direction="row" alignItems="center">
@@ -55,20 +71,41 @@ export default function MovieDetails(props) {
             })}
         </Grid>
       </Grid>
+      {reviews.length>0 &&
+        <>
+          <Grid item xs={12} sx={{mt:3}}>
+            <Typography variant="h4" component="h2">Reviews</Typography>
+            <Divider light/>
+          </Grid>
+          <Grid item xs={12} sx={{mt:2}}>
+            <Grid container justifyContent="center" alignItems="center" spacing={2}>
+              {reviews.map((review, index) => {
+                  if(index < 2){
+                    return <ReviewBox key={review.id} review={review}/>
+                  }
+                })}
+            </Grid>
+          </Grid>
+        </>
+      }
+      {similarMovies.length>0 &&
+        <>
+          <Grid item xs={12} sx={{mt:3}}>
+            <Typography variant="h4" component="h2">Similar Movies</Typography>
+            <Divider light/>
+          </Grid>
+          <Grid item xs={12} sx={{mt:2}}>
+            <Grid container >
+              {similarMovies.map(similarMovie => {
+                  return <MovieCard key={similarMovie.id} movie={similarMovie} size={3}/>
+              })}
+            </Grid>
+          </Grid>
+        </>
+      }
 
-      <Grid item xs={12} sx={{mt:3}}>
-        <Typography variant="h4" component="h2">Reviews</Typography>
-        <Divider light/>
-      </Grid>
-      <Grid item xs={12} sx={{mt:2}}>
-        <Grid container justifyContent="center" alignItems="center" spacing={2}>
-          {reviews.map((review, index) => {
-              if(index < 2){
-                return <ReviewBox key={review.id} review={review}/>
-              }
-            })}
-        </Grid>
-      </Grid>
+
+      
 
       
     </Grid>

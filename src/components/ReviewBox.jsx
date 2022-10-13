@@ -1,6 +1,20 @@
-import { Avatar, Typography, Grid, Accordion, AccordionSummary, AccordionDetails, Rating } from '@mui/material'
+import { Avatar, Typography, Grid, Accordion, AccordionSummary, AccordionDetails, Rating, Divider } from '@mui/material'
 import React from 'react'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+function formatDate(date) {
+  var d = new Date(date),
+    month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) 
+    month = '0' + month;
+  if (day.length < 2) 
+    day = '0' + day;
+
+  return [year, month, day].join('-');
+}
 
 export default function ReviewBox(props) {
 
@@ -19,12 +33,20 @@ export default function ReviewBox(props) {
           </Grid>
         </AccordionSummary>
         <AccordionDetails>
-          <Grid container spacing={1}>
+          <Grid container justifyContent="flex-end">
             <Grid item xs={12}>
+              <Divider sx={{my:1}} light/>
               <Typography>{review.content}</Typography>
+              <Divider sx={{my:1}} light/>
             </Grid>
-            <Grid item xs={12}>
-              <Rating value={review.author_details.rating/2} precision={0.1} readOnly size='medium'></Rating>
+
+            {review.author_details.rating !== null &&
+              <Grid item xs={10}>
+                <Rating value={review.author_details.rating/2} precision={0.1} readOnly size='medium'></Rating>
+              </Grid>
+            }
+            <Grid item display="flex" justifyContent="flex-end" xs={2}>
+              <Typography color="text.secondary" variant='subtitle2'>Last update: {formatDate(review.updated_at)}</Typography>
             </Grid>
 
           </Grid>

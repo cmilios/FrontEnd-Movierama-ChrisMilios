@@ -17,11 +17,11 @@ export default function GridArea() {
   }, [])
 
   return (
-    <Grid sx={{overflow:"hidden", display: "flex"}} justifyContent="flex-start" container spacing={2}>
+    <Grid justifyContent="flex-start" container spacing={2}>
       {
-        movies.map((movie,index) => {
+        movies.map(movie => {
            return <MovieCard key={movie.id} image={"https://image.tmdb.org/t/p/w500/"+movie.poster_path} name={movie.title} release_date={movie.release_date.substring(0,4)}
-            genres_ids={movie.genre_ids} movie={movie} ></MovieCard>
+            genres_ids={movie.genre_ids} movie={movie} size={2} />
         })
       }
     </Grid>
