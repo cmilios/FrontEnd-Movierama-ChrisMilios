@@ -44,12 +44,8 @@ export default function MovieDetailsArea(props) {
   }, [movie.id])
 
   useEffect(() => {
-    console.log(reviews)
-  }, [reviews])
-
-  useEffect(() => {
-    console.log(similarMovies)
-  }, [similarMovies])
+    console.log(movie)
+  }, [movie])
 
   return (
     <Grid container justifyContent="center" direction="row" alignItems="center">
@@ -60,17 +56,21 @@ export default function MovieDetailsArea(props) {
       <Grid item xs={12} sx={{mt:2}}>
         <Typography>{movie.overview}</Typography>
       </Grid>
-      <Grid item xs={12} sx={{mt:3}}>
-        <Typography variant="h4" component="h2">Media</Typography>
-        <Divider light/>
-      </Grid>
-      <Grid item xs={12} sx={{mt:2}}>
-        <Grid container justifyContent="center" spacing={2}>
-          {trailers.map(trailer => {
-              return <Grid item key={trailer.key}><iframe width="560" height="315" src={`https://www.youtube.com/embed/${trailer.key}`} title={trailer.name} allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe></Grid>
-            })}
-        </Grid>
-      </Grid>
+      {trailers.length > 0 &&
+        <>
+          <Grid item xs={12} sx={{mt:3}}>
+            <Typography variant="h4" component="h2">Media</Typography>
+            <Divider light/>
+          </Grid>
+          <Grid item xs={12} sx={{mt:2}}>
+            <Grid container justifyContent="center" spacing={2}>
+              {trailers.map(trailer => {
+                  return <Grid item key={trailer.key}><iframe width="560" height="315" src={`https://www.youtube.com/embed/${trailer.key}`} title={trailer.name} allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe></Grid>
+                })}
+            </Grid>
+          </Grid>
+        </>
+      }
       {reviews.length>0 &&
         <>
           <Grid item xs={12} sx={{mt:3}}>
@@ -95,7 +95,7 @@ export default function MovieDetailsArea(props) {
             <Divider light/>
           </Grid>
           <Grid item xs={12} sx={{mt:2}}>
-            <Grid container >
+            <Grid container justifyContent="center" alignItems="baseline" >
               {similarMovies.map(similarMovie => {
                   return <MovieCard key={similarMovie.id} movie={similarMovie} size={3}/>
               })}
