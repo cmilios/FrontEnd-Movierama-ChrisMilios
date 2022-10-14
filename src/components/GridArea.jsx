@@ -1,36 +1,46 @@
-import { Grid, LinearProgress, Typography } from '@mui/material'
-import React, {useState, useEffect, useRef, useCallback} from 'react'
+import { Grid, LinearProgress } from '@mui/material'
 import useFetch from '../hooks/useFetch'
+import React, {useState, useEffect, useRef, useCallback} from 'react'
 import MovieCard from './MovieCard'
 
 
 export default function GridArea() {
 
-  const [page, setPage] = useState(1)
-  const { loading, error, movies } = useFetch(page);
+  
+  
+  const [page, setPageNum] = useState(1)
   const loader = useRef(null);
+  const { loading, error, movies } = useFetch(page);
+  let isInitialized = useRef(false);
 
-
+  
   const handleObserver = useCallback((entries) => {
     const target = entries[0];
-    if (target.isIntersecting) {
-      setPage((prev) => prev + 1);
+    if (target.isIntersecting && isInitialized.current) {
+      setPageNum(prev => prev+1);
     }
   }, []);
 
   useEffect(() => {
+    console.log("page: "+page)
+  }, [page])
+
+  
+  useEffect(() => {
     const option = {
       root: null,
-      // rootMargin: "20px",
+      rootMargin: "20px",
       threshold: 0
     };
     const observer = new IntersectionObserver(handleObserver, option);
-    if (loader.current){
+    if (loader.current) {
       observer.observe(loader.current);
     } 
+    isInitialized.current = true;
       
   }, [handleObserver]);
 
+  //Geting the first 20 movies from the API
   // useEffect(() => {
   //   fetch("https://api.themoviedb.org/3/movie/now_playing?api_key=bc50218d91157b1ba4f142ef7baaa6a0&language=en-US&page="+page)
   //   .then(response => response.json())
@@ -50,12 +60,18 @@ export default function GridArea() {
                 genres_ids={movie.genre_ids} movie={movie} size={2} />
             })
           }
+          {loading && <LinearProgress color='inherit'/>}
         </Grid>
       </Grid>
+      <Grid item xs={12}>
+        
+        {error && <p>Error!</p>}
+        <div ref={loader}></div>
+      </Grid>
     </Grid>
-    {loading && <LinearProgress color='inherit'/>}
-    {error && <p>Error!</p>}
-    <div ref={loader}></div>
     </>
   )
 }
+
+
+

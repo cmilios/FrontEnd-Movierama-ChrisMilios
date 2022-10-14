@@ -49,6 +49,10 @@ export default function MovieCard(props) {
             <CardMedia component="img" image={imageUrl}>
             </CardMedia>
           }
+          {poster_path==null &&
+            <CardMedia component="img" src="/images/Poster_not_available.jpg" alt="imageNotAvailable">
+            </CardMedia>
+          }
           <CardContent>
             <Typography noWrap variant='h5'>{title}</Typography>
             <Typography noWrap color="text.secondary" variant='subtitle1'>{releaseYear}</Typography>
@@ -79,6 +83,9 @@ export default function MovieCard(props) {
               <Grid item xs={12}>
                 {poster_path!=null &&
                   <img style={{"marginBottom":"10px"}} width="300px" height="400px" src={imageUrl} alt='moviePoster'/>
+                }
+                {poster_path==null &&
+                  <img style={{"marginBottom":"10px"}} width="300px" height="400px" src="/images/Poster_not_available.jpg" alt='moviePoster'/>
                 }
               </Grid>
               <Grid item xs={12}>

@@ -7,6 +7,8 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import TheaterComedyOutlinedIcon from '@mui/icons-material/TheaterComedyOutlined';
+import HomeIcon from '@mui/icons-material/Home';
+import IconButton from '@mui/material/IconButton';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -51,18 +53,25 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchAppBar() {
+
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="sticky">
+      <AppBar position="fixed">
         <Toolbar>
-          <TheaterComedyOutlinedIcon></TheaterComedyOutlinedIcon>
+        <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }} onClick={scrollToTop}>
+            <HomeIcon></HomeIcon>
+        </IconButton>
           
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, mx: '5px',  display: { xs: 'none', sm: 'block' } }}
-          >
+          
+          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1, mx: '5px',  display: { xs: 'none', sm: 'block' } }}>
             MovieRama
           </Typography>
           <Search>

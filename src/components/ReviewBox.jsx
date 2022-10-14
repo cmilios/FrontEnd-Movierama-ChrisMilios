@@ -33,21 +33,20 @@ export default function ReviewBox(props) {
           </Grid>
         </AccordionSummary>
         <AccordionDetails>
-          <Grid container justifyContent="flex-end">
+          <Grid container>
             <Grid item xs={12}>
               <Divider sx={{my:1}} light/>
               <Typography>{review.content}</Typography>
               <Divider sx={{my:1}} light/>
             </Grid>
-
+            <Grid item display="flex" justifyContent="flex-start" xs={10}>
+              <Typography color="text.secondary" variant='subtitle2'>Last update: {formatDate(review.updated_at)}</Typography>
+            </Grid>
             {review.author_details.rating !== null &&
-              <Grid item xs={10}>
+              <Grid item display="flex" justifyContent="flex-end" xs={2}>
                 <Rating value={review.author_details.rating/2} precision={0.1} readOnly size='medium'></Rating>
               </Grid>
             }
-            <Grid item display="flex" justifyContent="flex-end" xs={2}>
-              <Typography color="text.secondary" variant='subtitle2'>Last update: {formatDate(review.updated_at)}</Typography>
-            </Grid>
 
           </Grid>
         </AccordionDetails>

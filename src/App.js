@@ -1,5 +1,5 @@
 
-import { CssBaseline } from '@mui/material';
+import { CssBaseline, Grid } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import darkScrollbar from '@mui/material/darkScrollbar';
 import './App.css';
@@ -24,8 +24,14 @@ function App() {
   return (
       <ThemeProvider theme={darkTheme}>
         <CssBaseline/>
-        <NavBar/>
-        <GridArea/>
+        <Grid container>
+          <Grid item xs={12}>
+            <NavBar/>
+          </Grid>
+          <Grid item sx={{mt:8}} xs={12}>
+            <GridArea/>
+          </Grid>
+        </Grid>
       </ThemeProvider>
   );
 }

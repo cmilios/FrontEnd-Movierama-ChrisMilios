@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect, useCallback } from 'react'
 
-export default function useFetch(query, page) {
+export default function useFetch(page) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [movies, setMovies] = useState([]);
@@ -15,7 +15,8 @@ export default function useFetch(query, page) {
       fetch("https://api.themoviedb.org/3/movie/now_playing?api_key=bc50218d91157b1ba4f142ef7baaa6a0&language=en-US&page="+page)
       .then(response => response.json())
       .then(data => {
-        setMovies((prev) => [...prev, ...new Set([...prev, ...data.results])])
+        console.log("loading page: "+page)
+        setMovies((prev) => [...prev,  ...data.results])
       })
       setLoading(false);
 
