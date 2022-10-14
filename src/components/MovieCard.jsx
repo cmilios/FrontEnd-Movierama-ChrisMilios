@@ -7,14 +7,12 @@ export default function MovieCard(props) {
 
   const {poster_path, title, release_date, genre_ids, vote_average, id } = props.movie
   const {size} = props
-  const movie = props.movie
   const imageUrl = "https://image.tmdb.org/t/p/w500/"+poster_path
-  const releaseYear = release_date.substring(0,4)
-  let initialized = false
+  const releaseYear = release_date!== undefined? release_date.substring(0,4) :"N/A"
 
   const [genres, setGenres] = useState([])
   const [open, setOpen] = useState(false)
-  const [scroll, setScroll] = React.useState('paper');
+  const [scroll] = React.useState('paper');
 
   const descriptionElementRef = React.useRef(null);
   useEffect(() => {
@@ -36,7 +34,7 @@ export default function MovieCard(props) {
         }
       })
     })
-  }, [])
+  }, [genres, genre_ids])
 
 
 

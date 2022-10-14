@@ -1,30 +1,31 @@
 import { Grid, LinearProgress } from '@mui/material'
-import useFetch from '../hooks/useFetch'
+import useInfiniteScroll from '../hooks/useInfiniteScroll'
 import React, {useState, useEffect, useRef, useCallback} from 'react'
 import MovieCard from './MovieCard'
 
 
-export default function GridArea() {
+export default function GridArea(props) {
 
-  
-  
+  const {query} = props
   const [page, setPageNum] = useState(1)
   const loader = useRef(null);
-  const { loading, error, movies } = useFetch(page);
   let isInitialized = useRef(false);
+  const { loading, error, movies } = useInfiniteScroll(query,page, isInitialized);
 
   
+
+  useEffect(() => {
+    setPageNum(1)
+  }, [query])
+
+
   const handleObserver = useCallback((entries) => {
     const target = entries[0];
     if (target.isIntersecting && isInitialized.current) {
       setPageNum(prev => prev+1);
     }
+    isInitialized.current = true;
   }, []);
-
-  useEffect(() => {
-    console.log("page: "+page)
-  }, [page])
-
   
   useEffect(() => {
     const option = {
@@ -36,11 +37,10 @@ export default function GridArea() {
     if (loader.current) {
       observer.observe(loader.current);
     } 
-    isInitialized.current = true;
       
   }, [handleObserver]);
 
-  //Geting the first 20 movies from the API
+  //Get the first 20 movies from the API
   // useEffect(() => {
   //   fetch("https://api.themoviedb.org/3/movie/now_playing?api_key=bc50218d91157b1ba4f142ef7baaa6a0&language=en-US&page="+page)
   //   .then(response => response.json())
@@ -56,7 +56,7 @@ export default function GridArea() {
         <Grid container justifyContent="flex-start" alignItems="baseline" spacing={2}>
           {
             movies.map(movie => {
-              return <MovieCard key={movie.id} image={"https://image.tmdb.org/t/p/w500/"+movie.poster_path} name={movie.title} release_date={movie.release_date.substring(0,4)}
+              return <MovieCard key={movie.id} image={"https://image.tmdb.org/t/p/w500/"+movie.poster_path} name={movie.title} release_date={movie.release_date}
                 genres_ids={movie.genre_ids} movie={movie} size={2} />
             })
           }

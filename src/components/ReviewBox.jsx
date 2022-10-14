@@ -25,7 +25,7 @@ export default function ReviewBox(props) {
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Grid container spacing={1} direction="row" alignItems="center">
             <Grid item xs={1}>
-              <Avatar alt='avatarImage' src={review.author_details.avatar_path}></Avatar>
+              <Avatar alt='avatarImage' src={"https://www.gravatar.com/avatar/"+review.author_details.avatar_path}></Avatar>
             </Grid>
             <Grid item xs={11}>
               <Typography>{review.author}</Typography>

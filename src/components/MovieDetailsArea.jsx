@@ -1,4 +1,4 @@
-import { Grid, Typography, Divider, ImageList, ImageListItem} from '@mui/material'
+import { Grid, Typography, Divider} from '@mui/material'
 import React, {useState, useEffect} from 'react'
 import MovieCard from './MovieCard'
 import ReviewBox from './ReviewBox'
