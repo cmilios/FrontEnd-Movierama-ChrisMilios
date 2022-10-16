@@ -5,7 +5,7 @@ import MovieDetailsArea from './MovieDetailsArea';
 
 export default function MovieCard(props) {
 
-  const {poster_path, title, release_date, genre_ids, vote_average, id } = props.movie
+  const {poster_path, title, release_date, genre_ids, vote_average, id, original_title, vote_count } = props.movie
   const {size} = props
   const imageUrl = "https://image.tmdb.org/t/p/w500/"+poster_path
   const releaseYear = release_date!== undefined? release_date.substring(0,4) :"N/A"
@@ -48,22 +48,38 @@ export default function MovieCard(props) {
             </CardMedia>
           }
           {poster_path==null &&
-            <CardMedia component="img" src="/images/Poster_not_available.jpg" alt="imageNotAvailable">
+            <CardMedia component="img" src="/movierama/images/Poster_not_available.jpg" alt="imageNotAvailable">
             </CardMedia>
           }
           <CardContent>
             <Typography noWrap variant='h5'>{title}</Typography>
-            <Typography noWrap color="text.secondary" variant='subtitle1'>{releaseYear}</Typography>
+            <Typography noWrap color="text.secondary" variant='subtitle1'>{"Original title: " + original_title}</Typography>
+            {releaseYear === "" &&
+              <Typography noWrap color="text.secondary" variant='subtitle1'>{"Release year: N/A"}</Typography>
+            }
+            {releaseYear !== "" &&
+              <Typography noWrap color="text.secondary" variant='subtitle1'>{releaseYear}</Typography>
+            }
             <Grid container>
               <Grid item xs={8}>
-                <Typography noWrap color="text.secondary" variant='subtitle2'>
+                {genre_ids.length>0 &&
+                  <Typography noWrap color="text.secondary" variant='subtitle2'>
                   {genres.map(genreName=>{
                     return genreName===genres.at(-1)? " "+genreName : " "+genreName+","
                   })}
                 </Typography>
+                }
+                {genre_ids.length===0 &&
+                  <Typography noWrap color="text.secondary" variant='subtitle2'>
+                    Genre: N/A
+                  </Typography>
+                }
+                
               </Grid>
                 <Grid item xs={4}>
-                  <Typography noWrap sx={{ display:'flex', justifyContent: "flex-end"}} color="text.secondary" variant='subtitle2'>{vote_average.toString().substring(0,3)+"/10"}<StarIcon fontSize="small"/></Typography>
+                  {vote_count>0 &&
+                    <Typography noWrap sx={{ display:'flex', justifyContent: "flex-end"}} color="text.secondary" variant='subtitle2'>{vote_average.toString().substring(0,3)+"/10"}<StarIcon fontSize="small"/></Typography>
+                  }
                 </Grid>
             </Grid>
           </CardContent>
@@ -83,22 +99,36 @@ export default function MovieCard(props) {
                   <img style={{"marginBottom":"10px"}} width="300px" height="400px" src={imageUrl} alt='moviePoster'/>
                 }
                 {poster_path==null &&
-                  <img style={{"marginBottom":"10px"}} width="300px" height="400px" src="/images/Poster_not_available.jpg" alt='moviePoster'/>
+                  <img style={{"marginBottom":"10px"}} width="300px" height="400px" src="/movierama/images/Poster_not_available.jpg" alt='moviePoster'/>
                 }
               </Grid>
               <Grid item xs={12}>
-                <Typography noWrap color="text.secondary" variant='subtitle1'>Release year: {releaseYear}</Typography>
+                {release_date === '' &&
+                  <Typography noWrap color="text.secondary" variant='subtitle1'>Release year: N/A</Typography>
+                }
+                {release_date !== '' &&
+                  <Typography noWrap color="text.secondary" variant='subtitle1'>Release year: {releaseYear}</Typography>
+                }
               </Grid>
               <Grid item xs={12}>
-                <Typography color="text.secondary" variant='subtitle2'>
-                  {genres.length===1?"Genre:":"Genres:"} 
-                    {genres.map((genreName, index)=>{
-                      return genreName===genres.at(-1)? " "+genreName : " "+genreName+","
-                    })}
-                </Typography>
+                {genre_ids.length>0 &&
+                  <Typography color="text.secondary" variant='subtitle2'>
+                    {genres.length===1?"Genre:":"Genres:"} 
+                      {genres.map((genreName, index)=>{
+                        return genreName===genres.at(-1)? " "+genreName : " "+genreName+","
+                      })}
+                  </Typography>
+                }
+                {genre_ids.length===0 &&
+                  <Typography color="text.secondary" variant='subtitle2'>
+                    Genre: N/A
+                  </Typography>
+                }
               </Grid>
               <Grid item xs={12}>
-                <Rating value={vote_average/2} precision={0.2} readOnly size='large' />
+                {vote_count !== 0 &&
+                  <Rating value={vote_average/2} precision={0.2} readOnly size='large' />
+                }
               </Grid>
               <Grid item xs={12}>
                 <Typography>Id: {id}</Typography>

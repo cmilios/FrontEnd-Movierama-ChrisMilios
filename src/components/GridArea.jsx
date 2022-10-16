@@ -6,18 +6,16 @@ import MovieCard from './MovieCard'
 
 export default function GridArea(props) {
 
+
+
   const {query} = props
   const [page, setPageNum] = useState(1)
-  const loader = useRef(null);
-  let isInitialized = useRef(false);
-  const { loading, error, movies } = useInfiniteScroll(query,page, isInitialized);
-
-  
-
   useEffect(() => {
     setPageNum(1)
   }, [query])
-
+  const loader = useRef(null);
+  let isInitialized = useRef(false);
+  
 
   const handleObserver = useCallback((entries) => {
     const target = entries[0];
@@ -39,6 +37,8 @@ export default function GridArea(props) {
     } 
       
   }, [handleObserver]);
+
+  const { loading, error, movies } = useInfiniteScroll(query,page, isInitialized);
 
   //Get the first 20 movies from the API
   // useEffect(() => {

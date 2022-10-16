@@ -1,7 +1,7 @@
 
 import { CssBaseline, Grid } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import darkScrollbar from '@mui/material/darkScrollbar';
 import './App.css';
 import GridArea from './components/GridArea';
@@ -29,6 +29,7 @@ function App() {
   const handleChange = (e) => {
     setQuery(e.target.value);
     console.log(e.target.value);
+
   };
 
   return (
