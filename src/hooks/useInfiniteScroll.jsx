@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 
-export default function useInfiniteScroll(query, page, isInitialized) {
+export default function useInfiniteScroll(query, page, isInitialized, pageReset) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   let [movies, setMovies] = useState([]);
@@ -16,7 +16,17 @@ export default function useInfiniteScroll(query, page, isInitialized) {
           .then(response => response.json())
           .then(data => {
             console.log("loaded now playing page: "+page)
-            setMovies((prev) => [...new Set([...prev,  ...data.results])])
+            if(page===1){
+              setMovies(data.results)
+            } else {
+              if(pageReset.current) {
+                setMovies(data.results)
+                pageReset.current = false;
+              }
+              else {
+                setMovies(prev => [...prev, ...data.results])
+              }
+            }
           })
           setLoading(false);
     
@@ -34,7 +44,17 @@ export default function useInfiniteScroll(query, page, isInitialized) {
           .then(response => response.json())
           .then(data => {
             console.log("loaded query: "+query+" page: "+page)
-            setMovies((prev) => [...new Set([...prev, ...data.results])] )
+            if(page===1){
+              setMovies(data.results)
+            }
+            else {
+              if(pageReset.current) {
+                setMovies([])
+                pageReset.current = false;
+              }else{
+                setMovies(prev => [...prev, ...data.results])
+              }
+            }
           })
           setLoading(false);
         }
@@ -44,6 +64,7 @@ export default function useInfiniteScroll(query, page, isInitialized) {
       }
   }, [query,page]);
 
+  
   useEffect(() => {
     sendQuery();
   }, [query, sendQuery, page]);

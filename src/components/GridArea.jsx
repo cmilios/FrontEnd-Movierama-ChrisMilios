@@ -10,9 +10,8 @@ export default function GridArea(props) {
 
   const {query} = props
   const [page, setPageNum] = useState(1)
-  useEffect(() => {
-    setPageNum(1)
-  }, [query])
+  let pageReset = useRef(false)
+
   const loader = useRef(null);
   let isInitialized = useRef(false);
   
@@ -38,16 +37,14 @@ export default function GridArea(props) {
       
   }, [handleObserver]);
 
-  const { loading, error, movies } = useInfiniteScroll(query,page, isInitialized);
-
-  //Get the first 20 movies from the API
-  // useEffect(() => {
-  //   fetch("https://api.themoviedb.org/3/movie/now_playing?api_key=bc50218d91157b1ba4f142ef7baaa6a0&language=en-US&page="+page)
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     setMovies(data.results)
-  //   })
-  // }, [])
+  useEffect(() => {
+    setPageNum(1)
+    console.log("page reset")
+    if(isInitialized.current && page!==1) {
+      pageReset.current = true;
+    }
+  }, [query])
+  const { loading, error, movies } = useInfiniteScroll(query,page, isInitialized, pageReset);
 
   return (
     <>
