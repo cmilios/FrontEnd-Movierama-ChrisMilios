@@ -8,9 +8,9 @@ export default function GridArea(props) {
 
 
 
-  const {query} = props
-  const [page, setPageNum] = useState(1)
-  let pageReset = useRef(false)
+  // const {query} = props
+  // const [page, setPageNum] = useState(1)
+  // let pageReset = useRef(false)
 
   const {query, page, handleObserver, isInitialized} = props
   // const [page, setPageNum] = useState(1)
