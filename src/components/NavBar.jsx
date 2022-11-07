@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -9,6 +9,7 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
 import IconButton from '@mui/material/IconButton';
+import { Button } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -38,15 +39,15 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
+    padding: theme.spacing(1, 1, 1, 1),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    paddingLeft: `calc(${theme.spacing(2)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      width: '12ch',
+      width: '15ch',
       '&:focus': {
-        width: '20ch',
+        width: '30ch',
       },
     },
   },
@@ -56,6 +57,7 @@ export default function SearchAppBar(props) {
 
 
   const {query, handleChange} = props
+  let [val, setVal] = useState("")
   
   const scrollToTop = () => {
     window.scrollTo({
@@ -63,6 +65,10 @@ export default function SearchAppBar(props) {
       behavior: "smooth"
     });
   };
+
+  const submit = () =>{
+    handleChange(val)
+  }
 
 
   return (
@@ -78,14 +84,15 @@ export default function SearchAppBar(props) {
             MovieRama
           </Typography>
           <Search>
-            <SearchIconWrapper>
+            {/* <SearchIconWrapper>
               <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase value={query} onChange={handleChange}
+            </SearchIconWrapper> */}
+            <StyledInputBase value={val} onChange={(e) => setVal(e.target.value)} onKeyDown={e=> e.keyCode===13? submit():null}
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
+            <Button variant='contained' sx={{mx: 1}} onClick={submit} startIcon={<SearchIcon></SearchIcon>}>search</Button>
         </Toolbar>
       </AppBar>
     </Box>

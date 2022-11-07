@@ -1,7 +1,7 @@
 
 import { CssBaseline, Grid } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import darkScrollbar from '@mui/material/darkScrollbar';
 import './App.css';
 import GridArea from './components/GridArea';
@@ -23,13 +23,26 @@ const darkTheme = createTheme({
 
 function App() {
 
-
+  
+  let isInitialized = useRef(false);
   const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
 
-  const handleChange = (e) => {
-    setQuery(e.target.value);
-    console.log(e.target.value);
+  useEffect(() => {
+    setPage(1);
+  }, [query]);
+
+  const handleChange = (val) => {
+    setQuery(val);
+    console.log(val);
   };
+  const handleObserver = useCallback((entries) => {
+    const target = entries[0];
+    if (target.isIntersecting && isInitialized.current) {
+      setPage(prev => prev+1);
+    }
+    isInitialized.current = true;
+  }, []);
 
   return (
       <ThemeProvider theme={darkTheme}>
@@ -39,7 +52,7 @@ function App() {
             <NavBar query={query} handleChange={handleChange}/>
           </Grid>
           <Grid item sx={{mt:8}} xs={12}>
-            <GridArea query={query}/>
+            <GridArea query={query} page = {page} handleObserver={handleObserver} isInitialized={isInitialized}/>
           </Grid>
         </Grid>
       </ThemeProvider>

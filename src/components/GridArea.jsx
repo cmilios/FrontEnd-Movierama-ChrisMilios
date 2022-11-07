@@ -6,26 +6,20 @@ import MovieCard from './MovieCard'
 
 export default function GridArea(props) {
 
-  const {query} = props
-  const [page, setPageNum] = useState(1)
+  const {query, page, handleObserver, isInitialized} = props
+  // const [page, setPageNum] = useState(1)
   const loader = useRef(null);
-  let isInitialized = useRef(false);
+  
   const { loading, error, movies } = useInfiniteScroll(query,page, isInitialized);
 
   
 
-  useEffect(() => {
-    setPageNum(1)
-  }, [query])
+  // useEffect(() => {
+  //   setPageNum(1)
+  // }, [query])
 
 
-  const handleObserver = useCallback((entries) => {
-    const target = entries[0];
-    if (target.isIntersecting && isInitialized.current) {
-      setPageNum(prev => prev+1);
-    }
-    isInitialized.current = true;
-  }, []);
+
   
   useEffect(() => {
     const option = {
