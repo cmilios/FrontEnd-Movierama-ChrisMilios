@@ -59,6 +59,7 @@ export default function SearchAppBar(props) {
   const {query, handleChange} = props
   let [val, setVal] = useState("")
   
+  
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,

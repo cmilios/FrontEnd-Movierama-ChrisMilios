@@ -6,6 +6,12 @@ import MovieCard from './MovieCard'
 
 export default function GridArea(props) {
 
+
+
+  const {query} = props
+  const [page, setPageNum] = useState(1)
+  let pageReset = useRef(false)
+
   const {query, page, handleObserver, isInitialized} = props
   // const [page, setPageNum] = useState(1)
   const loader = useRef(null);
@@ -34,14 +40,15 @@ export default function GridArea(props) {
       
   }, [handleObserver]);
 
-  //Get the first 20 movies from the API
   // useEffect(() => {
-  //   fetch("https://api.themoviedb.org/3/movie/now_playing?api_key=bc50218d91157b1ba4f142ef7baaa6a0&language=en-US&page="+page)
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     setMovies(data.results)
-  //   })
-  // }, [])
+  //   setPageNum(1)
+  //   console.log("page reset")
+  //   if(isInitialized.current && page!==1) {
+  //     pageReset.current = true;
+  //   }
+  // }, [query])
+  
+  // const { loading, error, movies } = useInfiniteScroll(query,page, isInitialized, pageReset);
 
   return (
     <>
